@@ -190,36 +190,15 @@ function Hero() {
     <section id="inicio" className="relative overflow-hidden">
       <WavyLines />
       <div className="relative mx-auto max-w-4xl px-6 pt-20 pb-24 text-center lg:pt-28 lg:pb-32">
-        {/* Monogram */}
         <div className="mx-auto flex flex-col items-center">
-          <div className="relative flex items-end justify-center">
-            <span
-              aria-hidden
-              className="font-serif text-[7rem] leading-none font-semibold text-primary lg:text-[9rem]"
-            >
-              S
-            </span>
-            <span
-              aria-hidden
-              className="-ml-6 font-serif text-[7rem] leading-none font-semibold italic text-[oklch(var(--gold))] lg:-ml-8 lg:text-[9rem]"
-              style={{ color: "oklch(0.7 0.1 75)" }}
-            >
-              R
-            </span>
-          </div>
-          <div className="mt-2 flex flex-col items-center gap-1">
-            <span className="font-serif text-lg font-medium tracking-[0.35em] text-primary lg:text-xl">
-              PLENITUD DENTAL
-            </span>
-            <div className="flex items-center gap-2 text-primary/60">
-              <span className="h-px w-16 bg-primary/30" />
-              <ToothIcon className="h-4 w-4" />
-              <span className="h-px w-16 bg-primary/30" />
-            </div>
-          </div>
+          <img
+            src={logoAsset.url}
+            alt="SR Plenitud Dental"
+            className="h-56 w-auto lg:h-72"
+          />
         </div>
 
-        <h1 className="mt-14 font-serif text-5xl leading-[1.05] font-semibold tracking-tight text-foreground lg:text-7xl">
+        <h1 className="mt-10 font-serif text-5xl leading-[1.05] font-semibold tracking-tight text-foreground lg:text-7xl">
           Tu sonrisa en Plenitud
         </h1>
         <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground lg:text-lg">
