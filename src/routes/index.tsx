@@ -342,10 +342,10 @@ function PhotoBanner({ onOpenModal }: { onOpenModal: () => void }) {
   return (
     <section className="relative">
       <div className="relative h-[420px] w-full overflow-hidden lg:h-[520px]">
-        <Placeholder
-          className="absolute inset-0 h-full w-full rounded-none"
-          label="Fotografía exterior de la clínica"
-          dimensions="1920 × 1080"
+        <img
+          src={clinicaExteriorAsset.url}
+          alt="Fachada de la clínica Plenitud Dental en Sant Martí"
+          className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/30 to-black/50" />
 
