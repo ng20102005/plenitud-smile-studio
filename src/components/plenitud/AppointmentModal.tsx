@@ -44,10 +44,15 @@ export function AppointmentModal({
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-lg rounded-2xl bg-white shadow-2xl animate-in zoom-in-95 fade-in duration-200"
       >
-        <div className="flex items-center justify-between border-b border-border/60 px-6 py-4">
-          <span className="font-serif text-lg font-semibold tracking-tight text-foreground">
-            SR PLENITUD DENTAL
-          </span>
+        <div className="flex items-center justify-between px-6 pt-6 pb-4">
+          <div className="flex items-center gap-2.5">
+            <span className="grid h-9 w-9 place-items-center rounded-full border border-primary/30 font-serif text-xs font-semibold text-primary">
+              SR
+            </span>
+            <span className="font-serif text-sm font-semibold tracking-[0.2em] text-primary">
+              PLENITUD DENTAL
+            </span>
+          </div>
           <button
             aria-label="Cerrar"
             onClick={onClose}
@@ -57,36 +62,36 @@ export function AppointmentModal({
           </button>
         </div>
 
-        <div className="px-6 py-6">
+        <div className="px-6 pb-6">
           <h2 id="appointment-title" className="font-serif text-2xl font-semibold text-foreground">
             Reserva tu cita
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Completa el formulario y te contactaremos para confirmar tu visita
+            Completa el formulario y te contactaremos para confirmar tu visita.
           </p>
 
           <form
-            className="mt-6 space-y-5"
+            className="mt-6 space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
               onClose();
             }}
           >
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              <FloatInput label="Nombre" name="nombre" required />
-              <FloatInput label="Teléfono" name="telefono" type="tel" required />
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Field label="Nombre" required>
+                <input required placeholder="Tu nombre" className={inputCls} />
+              </Field>
+              <Field label="Teléfono" required>
+                <input required type="tel" placeholder="600 000 000" className={inputCls} />
+              </Field>
             </div>
-            <FloatInput label="Correo electrónico" name="email" type="email" required />
 
-            <div>
-              <label className="block text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                Tratamiento de interés
-              </label>
-              <select
-                required
-                defaultValue=""
-                className="mt-1 w-full border-0 border-b border-border bg-transparent py-2 text-sm text-foreground outline-none transition-colors focus:border-primary"
-              >
+            <Field label="Correo electrónico" required>
+              <input required type="email" placeholder="tu@email.com" className={inputCls} />
+            </Field>
+
+            <Field label="Tratamiento de interés">
+              <select defaultValue="" className={inputCls}>
                 <option value="" disabled>
                   Selecciona un tratamiento
                 </option>
@@ -96,28 +101,22 @@ export function AppointmentModal({
                   </option>
                 ))}
               </select>
-            </div>
+            </Field>
 
-            <div>
-              <label className="block text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                Mensaje
-              </label>
+            <Field label={`Mensaje (${message.length}/500)`}>
               <textarea
                 maxLength={500}
                 rows={3}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Cuéntanos qué necesitas o el horario que prefieres..."
-                className="mt-1 w-full resize-none border-0 border-b border-border bg-transparent py-2 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary"
+                className={`${inputCls} resize-none`}
               />
-              <div className="mt-1 text-right text-xs text-muted-foreground">
-                {message.length}/500
-              </div>
-            </div>
+            </Field>
 
             <button
               type="submit"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg"
+              className="group mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90"
             >
               Solicitar Cita
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -129,19 +128,25 @@ export function AppointmentModal({
   );
 }
 
-function FloatInput({
+const inputCls =
+  "w-full rounded-lg border border-border bg-white px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/10";
+
+function Field({
   label,
-  ...rest
-}: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) {
+  required,
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) {
   return (
-    <div>
-      <label className="block text-xs font-medium tracking-wide text-muted-foreground uppercase">
+    <label className="block">
+      <span className="mb-1.5 block text-sm font-medium text-foreground">
         {label}
-      </label>
-      <input
-        {...rest}
-        className="mt-1 w-full border-0 border-b border-border bg-transparent py-2 text-sm text-foreground outline-none transition-colors focus:border-primary"
-      />
-    </div>
+        {required ? <span className="text-primary"> *</span> : null}
+      </span>
+      {children}
+    </label>
   );
 }
