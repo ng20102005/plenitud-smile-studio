@@ -7,16 +7,11 @@ import {
   X,
   MapPin,
   Mail,
-  Clock,
-  Stethoscope,
-  Sparkles,
-  Smile,
-  ShieldCheck,
-  Wand2,
-  AlignHorizontalDistributeCenter,
+  MessageCircle,
+  Instagram,
 } from "lucide-react";
 import { Placeholder } from "@/components/plenitud/Placeholder";
-import { AppointmentModal, TREATMENTS } from "@/components/plenitud/AppointmentModal";
+import { AppointmentModal } from "@/components/plenitud/AppointmentModal";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -33,32 +28,26 @@ const TREATMENT_ITEMS = [
   {
     title: "Odontología General",
     desc: "Revisiones, limpiezas, empastes y todo el cuidado esencial para mantener tu salud bucal en perfecto estado.",
-    Icon: Stethoscope,
   },
   {
     title: "Periodoncia",
     desc: "Cuidado especializado de encías y tejidos de soporte dental. Prevención y tratamiento de enfermedades periodontales.",
-    Icon: ShieldCheck,
   },
   {
     title: "Implantología y Prótesis",
     desc: "Recupera la funcionalidad y estética de tu sonrisa con implantes de última generación y prótesis personalizadas.",
-    Icon: Sparkles,
   },
   {
     title: "Estética y Rehabilitación",
     desc: "Blanqueamiento, carillas, coronas y diseño de sonrisa. Recupera la belleza natural de tu sonrisa con tratamientos personalizados.",
-    Icon: Wand2,
   },
   {
     title: "Endodoncia",
     desc: "Tratamiento de conductos con tecnología microscópica de precisión. Salvamos tus dientes naturales con técnicas mínimamente invasivas.",
-    Icon: Smile,
   },
   {
     title: "Ortodoncia",
     desc: "Corregimos la alineación de tus dientes con brackets estéticos y alineadores invisibles. Logra la sonrisa recta y armoniosa que siempre has deseado.",
-    Icon: AlignHorizontalDistributeCenter,
   },
 ];
 
@@ -72,15 +61,12 @@ function Landing() {
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground antialiased">
-      <Header
-        onOpenModal={openModal}
-        menuOpen={menuOpen}
-        setMenuOpen={setMenuOpen}
-      />
+      <Header onOpenModal={openModal} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       <main>
-        <Hero onOpenModal={openModal} />
-        <About onOpenModal={openModal} />
+        <Hero />
+        <About />
         <Treatments />
+        <PhotoBanner onOpenModal={openModal} />
       </main>
       <Footer />
       <AppointmentModal open={modalOpen} onClose={() => setModalOpen(false)} />
@@ -88,6 +74,27 @@ function Landing() {
   );
 }
 
+/* ---------- Brand mark ---------- */
+function BrandMark({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className="flex items-center gap-2.5">
+      <span className="grid h-9 w-9 place-items-center rounded-full border border-primary/40 font-serif text-xs font-semibold text-primary">
+        SR
+      </span>
+      <span
+        className={
+          compact
+            ? "font-serif text-sm font-semibold tracking-[0.22em] text-primary"
+            : "font-serif text-sm font-semibold tracking-[0.22em] text-primary sm:text-base"
+        }
+      >
+        PLENITUD DENTAL
+      </span>
+    </div>
+  );
+}
+
+/* ---------- Header ---------- */
 function Header({
   onOpenModal,
   menuOpen,
@@ -98,15 +105,10 @@ function Header({
   setMenuOpen: (v: boolean) => void;
 }) {
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/75 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        <a href="#inicio" className="flex items-center gap-2.5">
-          <span className="grid h-9 w-9 place-items-center rounded-full border border-primary/30 font-serif text-sm font-semibold text-primary">
-            SR
-          </span>
-          <span className="font-serif text-lg font-semibold tracking-tight">
-            SR PLENITUD DENTAL
-          </span>
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 lg:px-8">
+        <a href="#inicio" className="shrink-0">
+          <BrandMark />
         </a>
 
         <nav className="hidden items-center gap-9 lg:flex" aria-label="Principal">
@@ -122,7 +124,7 @@ function Header({
         </nav>
 
         <div className="hidden lg:block">
-          <CtaButton onClick={onOpenModal}>Pedir Cita</CtaButton>
+          <PrimaryCta onClick={onOpenModal}>Pedir Cita</PrimaryCta>
         </div>
 
         <button
@@ -148,9 +150,9 @@ function Header({
               </a>
             ))}
             <div className="mt-2">
-              <CtaButton onClick={onOpenModal} className="w-full justify-center">
+              <PrimaryCta onClick={onOpenModal} className="w-full justify-center">
                 Pedir Cita
-              </CtaButton>
+              </PrimaryCta>
             </div>
           </div>
         </div>
@@ -159,7 +161,7 @@ function Header({
   );
 }
 
-function CtaButton({
+function PrimaryCta({
   children,
   onClick,
   className = "",
@@ -171,7 +173,7 @@ function CtaButton({
   return (
     <button
       onClick={onClick}
-      className={`group inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md ${className}`}
+      className={`group inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md ${className}`}
     >
       {children}
       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -179,126 +181,139 @@ function CtaButton({
   );
 }
 
-function Hero({ onOpenModal }: { onOpenModal: () => void }) {
+/* ---------- Hero (centered with monogram + wavy decoration) ---------- */
+function Hero() {
   return (
-    <section id="inicio" className="relative">
-      <div className="mx-auto max-w-7xl px-6 pt-16 pb-32 lg:grid lg:grid-cols-2 lg:gap-16 lg:px-8 lg:pt-24 lg:pb-40">
-        <div className="flex flex-col justify-center">
-          <span className="text-xs font-semibold tracking-[0.25em] text-primary uppercase">
-            Sant Martí · Barcelona
-          </span>
-          <h1 className="mt-4 font-serif text-5xl leading-[1.05] font-semibold tracking-tight text-foreground lg:text-7xl">
-            Tu sonrisa <br />
-            <span className="italic text-primary">en Plenitud</span>
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-muted-foreground lg:text-xl">
-            Cuidado dental de confianza en el corazón de Sant Martí, Barcelona.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a
-              href="#tratamientos"
-              className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md"
+    <section id="inicio" className="relative overflow-hidden">
+      <WavyLines />
+      <div className="relative mx-auto max-w-4xl px-6 pt-20 pb-24 text-center lg:pt-28 lg:pb-32">
+        {/* Monogram */}
+        <div className="mx-auto flex flex-col items-center">
+          <div className="relative flex items-end justify-center">
+            <span
+              aria-hidden
+              className="font-serif text-[7rem] leading-none font-semibold text-primary lg:text-[9rem]"
             >
-              Ver Tratamientos
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </a>
-            <a
-              href="tel:933087059"
-              className="inline-flex items-center gap-2 rounded-xl border border-primary/40 bg-transparent px-6 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary/5"
+              S
+            </span>
+            <span
+              aria-hidden
+              className="-ml-6 font-serif text-[7rem] leading-none font-semibold italic text-[oklch(var(--gold))] lg:-ml-8 lg:text-[9rem]"
+              style={{ color: "oklch(0.7 0.1 75)" }}
             >
-              <Phone className="h-4 w-4" />
-              Llamar Ahora
-            </a>
+              R
+            </span>
+          </div>
+          <div className="mt-2 flex flex-col items-center gap-1">
+            <span className="font-serif text-lg font-medium tracking-[0.35em] text-primary lg:text-xl">
+              PLENITUD DENTAL
+            </span>
+            <div className="flex items-center gap-2 text-primary/60">
+              <span className="h-px w-16 bg-primary/30" />
+              <ToothIcon className="h-4 w-4" />
+              <span className="h-px w-16 bg-primary/30" />
+            </div>
           </div>
         </div>
 
-        <div className="mt-12 lg:mt-0">
-          <Placeholder
-            className="h-[420px] w-full rounded-[2rem] lg:h-[560px]"
-            label="Fotografía de la clínica"
-            dimensions="1200×1400"
-          />
-        </div>
-      </div>
+        <h1 className="mt-14 font-serif text-5xl leading-[1.05] font-semibold tracking-tight text-foreground lg:text-7xl">
+          Tu sonrisa en Plenitud
+        </h1>
+        <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground lg:text-lg">
+          Cuidado dental de confianza en el corazón de Sant Martí, Barcelona.
+        </p>
 
-      {/* Floating banner */}
-      <div className="relative -mt-20 px-6 pb-16 lg:pb-24">
-        <div className="mx-auto grid max-w-5xl gap-6 rounded-3xl bg-primary p-8 text-primary-foreground shadow-xl lg:grid-cols-[1.1fr_1fr_auto] lg:items-center lg:gap-10 lg:p-10">
-          <p className="font-serif text-2xl leading-tight font-medium lg:text-3xl">
-            tu mejor sonrisa <br />
-            <span className="italic opacity-90">empieza aquí.</span>
-          </p>
-          <p className="text-sm text-primary-foreground/80 lg:text-base">
-            Da el primer paso hacia una sonrisa que te enamore.
-          </p>
-          <div className="flex flex-col items-start gap-3 lg:items-end">
-            <button
-              onClick={onOpenModal}
-              className="group inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-semibold text-primary transition-all hover:bg-background/90"
-            >
-              Pedir Cita
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </button>
-            <a
-              href="tel:933087059"
-              className="text-xs font-medium tracking-widest text-primary-foreground/80 uppercase hover:text-primary-foreground"
-            >
-              Tel 933 08 70 59
-            </a>
-          </div>
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="#tratamientos"
+            className="group inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md"
+          >
+            Ver Tratamientos
+          </a>
+          <a
+            href="tel:933087059"
+            className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-white/60 px-6 py-3 text-sm font-semibold text-primary transition-all hover:bg-white"
+          >
+            <Phone className="h-4 w-4" />
+            Llamar Ahora
+          </a>
         </div>
       </div>
     </section>
   );
 }
 
-function About({ onOpenModal }: { onOpenModal: () => void }) {
+function WavyLines() {
   return (
-    <section
-      id="sobre-nosotros"
-      className="bg-[oklch(0.965_0.014_85)] py-24 lg:py-32"
+    <svg
+      aria-hidden
+      className="pointer-events-none absolute inset-0 h-full w-full text-[oklch(0.78_0.08_80)]/40"
+      preserveAspectRatio="none"
+      viewBox="0 0 1200 800"
+      fill="none"
     >
-      <div className="mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
-        <Placeholder
-          className="h-[500px] w-full rounded-3xl lg:h-[640px]"
-          label="Equipo de la clínica"
-          dimensions="900×1200"
+      {[0, 40, 80, 120, 160].map((o, i) => (
+        <path
+          key={i}
+          d={`M -50 ${260 + o} C 250 ${200 + o}, 500 ${340 + o}, 800 ${240 + o} S 1250 ${180 + o}, 1300 ${260 + o}`}
+          stroke="currentColor"
+          strokeWidth={0.6}
+          fill="none"
+          opacity={0.9 - i * 0.12}
         />
-        <div className="flex flex-col justify-center">
-          <span className="text-sm font-semibold tracking-[0.25em] text-primary uppercase">
-            Sobre Nosotros
-          </span>
-          <h2 className="mt-3 font-serif text-4xl leading-tight font-semibold text-foreground lg:text-5xl">
-            Tu clínica dental de barrio, con alma de alta gama.
-          </h2>
-          <p className="mt-6 text-base leading-relaxed text-muted-foreground lg:text-lg">
-            En Plenitud Dental creemos que cuidar tu sonrisa no debería ser un
-            lujo frío e impersonal. Somos una clínica de proximidad en el
-            corazón de Sant Martí donde combinamos la calidez del trato cercano
-            con los estándares más exigentes de la odontología moderna.
-          </p>
-          <p className="mt-4 text-base leading-relaxed text-muted-foreground lg:text-lg">
-            Un equipo que te escucha de verdad y un espacio diseñado para que te
-            sientas como en casa. Porque tu bienestar empieza por una sonrisa
-            cuidada con mimo.
-          </p>
-          <div className="mt-8">
-            <a
-              href="#tratamientos"
-              onClick={(e) => {
-                e.preventDefault();
-                document
-                  .getElementById("tratamientos")
-                  ?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="group inline-flex items-center gap-2 text-sm font-semibold text-primary"
-            >
-              Descubre nuestros tratamientos
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </a>
-          </div>
-          <div className="mt-8 lg:hidden">
-            <CtaButton onClick={onOpenModal}>Pedir Cita</CtaButton>
+      ))}
+    </svg>
+  );
+}
+
+function ToothIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <path
+        d="M7.5 3.5C5.5 3.5 4 5 4 7.2c0 1.4.4 2.5.8 3.6.4 1 .7 2 .7 3.2 0 1.4.2 3 .9 4.4.5 1 1.3 1.6 2 1.6.7 0 1.1-.5 1.4-1.6l.6-2.2c.2-.8.7-1.4 1.6-1.4s1.4.6 1.6 1.4l.6 2.2c.3 1.1.7 1.6 1.4 1.6.7 0 1.5-.6 2-1.6.7-1.4.9-3 .9-4.4 0-1.2.3-2.2.7-3.2.4-1.1.8-2.2.8-3.6C20 5 18.5 3.5 16.5 3.5c-1.4 0-2.4.5-3.2 1-.6.4-1 .7-1.3.7-.3 0-.7-.3-1.3-.7-.8-.5-1.8-1-3.2-1z"
+        stroke="currentColor"
+        strokeWidth="1.2"
+      />
+    </svg>
+  );
+}
+
+/* ---------- About ---------- */
+function About() {
+  return (
+    <section id="sobre-nosotros" className="bg-white py-24 lg:py-32">
+      <div className="mx-auto max-w-6xl px-6 lg:px-8">
+        <span className="inline-block rounded-full border border-border px-4 py-1.5 text-[11px] font-semibold tracking-[0.28em] text-foreground/80 uppercase">
+          Sobre Nosotros
+        </span>
+        <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-start">
+          <Placeholder
+            className="aspect-[4/5] w-full rounded-2xl"
+            label="Fotografía de la clínica"
+            dimensions="1200 × 1500"
+          />
+          <div className="flex flex-col justify-center">
+            <h2 className="font-serif text-4xl leading-[1.1] font-semibold text-foreground lg:text-5xl">
+              Tu <span className="italic">clínica dental</span> de barrio, con alma de alta gama.
+            </h2>
+            <p className="mt-6 text-[15px] leading-relaxed text-muted-foreground">
+              En <span className="font-semibold text-foreground">Plenitud Dental</span> creemos
+              que cuidar tu sonrisa no debería ser un lujo frío e impersonal. Somos una clínica
+              de proximidad en el corazón de Sant Martí donde combinamos la calidez del trato
+              cercano con los estándares más exigentes de la odontología moderna.
+            </p>
+            <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
+              Un equipo que te escucha de verdad y un espacio diseñado para que te sientas como
+              en casa. Porque tu bienestar empieza por una sonrisa cuidada con mimo.
+            </p>
+            <div className="mt-8">
+              <a
+                href="#tratamientos"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90"
+              >
+                Descubre nuestros tratamientos
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -306,44 +321,31 @@ function About({ onOpenModal }: { onOpenModal: () => void }) {
   );
 }
 
+/* ---------- Treatments ---------- */
 function Treatments() {
   return (
     <section id="tratamientos" className="py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold tracking-[0.25em] text-primary uppercase">
-            Especialidades
-          </span>
-          <h2 className="mt-3 font-serif text-4xl leading-tight font-semibold text-foreground lg:text-5xl">
-            Nuestros Tratamientos
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Odontología integral con tecnología avanzada y un cuidado siempre
-            personal.
-          </p>
-        </div>
+      <div className="mx-auto max-w-6xl px-6 lg:px-8">
+        <h2 className="text-center font-serif text-4xl font-semibold text-foreground lg:text-5xl">
+          Nuestros Tratamientos
+        </h2>
 
-        <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {TREATMENT_ITEMS.map(({ title, desc, Icon }) => (
+        <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {TREATMENT_ITEMS.map(({ title, desc }) => (
             <article
               key={title}
-              className="group flex flex-col overflow-hidden rounded-2xl bg-card shadow-sm ring-1 ring-border/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-border/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
-              <Placeholder
-                className="aspect-square w-full"
-                label={`Imagen de ${title}`}
-                dimensions="800×800"
-              />
-              <div className="flex flex-1 flex-col p-6">
-                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                  <Icon className="h-5 w-5" strokeWidth={1.5} />
-                </div>
-                <h3 className="font-serif text-xl font-semibold text-foreground">
-                  {title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {desc}
-                </p>
+              <div className="p-4 pb-0">
+                <Placeholder
+                  className="aspect-square w-full rounded-xl"
+                  label={`Imagen de ${title}`}
+                  dimensions="800 × 800"
+                />
+              </div>
+              <div className="flex flex-1 flex-col items-center px-6 pt-5 pb-8 text-center">
+                <h3 className="font-serif text-xl font-semibold text-foreground">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{desc}</p>
               </div>
             </article>
           ))}
@@ -353,89 +355,131 @@ function Treatments() {
   );
 }
 
+/* ---------- Photo banner ---------- */
+function PhotoBanner({ onOpenModal }: { onOpenModal: () => void }) {
+  return (
+    <section className="relative">
+      <div className="relative h-[420px] w-full overflow-hidden lg:h-[520px]">
+        <Placeholder
+          className="absolute inset-0 h-full w-full rounded-none"
+          label="Fotografía exterior de la clínica"
+          dimensions="1920 × 1080"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/30 to-black/50" />
+
+        <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-center px-6 lg:px-8">
+          <h2 className="max-w-2xl font-serif text-4xl leading-tight font-medium text-white lg:text-6xl">
+            tu mejor <br />
+            sonrisa empieza <br />
+            <span className="italic">aquí.</span>
+          </h2>
+
+          <div className="mt-8 flex flex-col items-start gap-3">
+            <button
+              onClick={onOpenModal}
+              className="group inline-flex items-center gap-3 rounded-full bg-white py-2 pr-2 pl-6 text-sm font-semibold text-primary transition-all hover:bg-white/90"
+            >
+              Pedir Cita
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground transition-transform group-hover:translate-x-0.5">
+                <ArrowRight className="h-4 w-4" />
+              </span>
+            </button>
+            <a
+              href="tel:933087059"
+              className="text-xs font-semibold tracking-[0.25em] text-white/90 uppercase hover:text-white"
+            >
+              Tel 933 08 70 59
+            </a>
+          </div>
+
+          <div className="absolute right-6 bottom-8 hidden max-w-xs items-start gap-2 text-right text-white/90 lg:flex lg:right-8">
+            <p className="text-sm leading-snug">
+              Da el primer paso hacia <br /> una sonrisa que te enamore.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Footer ---------- */
 function Footer() {
   return (
-    <footer
-      id="contacto"
-      className="bg-[oklch(0.28_0.09_262)] text-[oklch(0.92_0.01_85)]"
-    >
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
+    <footer id="contacto" className="bg-background px-4 pt-14 pb-10 lg:px-8">
+      <div className="mx-auto max-w-6xl rounded-3xl bg-white p-10 shadow-sm ring-1 ring-border/40 lg:p-14">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <div className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-full border border-white/30 font-serif text-sm font-semibold text-white">
-                SR
-              </span>
-              <span className="font-serif text-lg font-semibold tracking-tight text-white">
-                SR PLENITUD DENTAL
-              </span>
-            </div>
-            <p className="mt-5 text-sm leading-relaxed text-white/70">
-              Clínica dental en Sant Martí. Tecnología avanzada, equipo cercano
-              y un espacio pensado para tu bienestar.
+            <BrandMark />
+            <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+              Clínica dental en Sant Martí. Tecnología avanzada, equipo cercano y un espacio
+              pensado para tu bienestar.
             </p>
           </div>
 
           <FooterCol title="Contacto">
-            <li className="flex items-start gap-2">
-              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-white/60" />
+            <li className="flex items-start gap-3">
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
               <span>Carrer d'Andrade, 45, Sant Martí, Barcelona</span>
             </li>
-            <li className="flex items-center gap-2">
-              <Phone className="h-4 w-4 shrink-0 text-white/60" />
-              <a href="tel:933087059" className="hover:text-white">933 087 059</a>
+            <li className="flex items-center gap-3">
+              <Phone className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
+              <a href="tel:933087059" className="hover:text-primary">933 087 059</a>
             </li>
-            <li className="flex items-center gap-2">
-              <Phone className="h-4 w-4 shrink-0 text-white/60" />
-              <a href="tel:692434765" className="hover:text-white">692 434 765</a>
+            <li className="flex items-center gap-3">
+              <MessageCircle className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
+              <a href="tel:692434765" className="hover:text-primary">692 434 765</a>
             </li>
-            <li className="flex items-center gap-2">
-              <Mail className="h-4 w-4 shrink-0 text-white/60" />
-              <a href="mailto:srplenitudental@gmail.com" className="hover:text-white break-all">
+            <li className="flex items-center gap-3">
+              <Mail className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
+              <a href="mailto:srplenitudental@gmail.com" className="break-all hover:text-primary">
                 srplenitudental@gmail.com
               </a>
             </li>
           </FooterCol>
 
           <FooterCol title="Horario">
-            <li className="flex items-start gap-2">
-              <Clock className="mt-0.5 h-4 w-4 shrink-0 text-white/60" />
-              <span>Lunes a viernes: 10:00–14:00 &amp; 15:00–19:00</span>
-            </li>
-            <li className="pl-6 text-white/60">Sábados y domingos cerrado</li>
+            <li className="text-foreground">Lunes a viernes: 10:00 – 14:00 y 15:00 – 19:00</li>
+            <li>Sábados y domingos cerrado</li>
           </FooterCol>
 
           <FooterCol title="Legal">
-            <li><a href="#" className="hover:text-white">Política de Privacidad</a></li>
-            <li><a href="#" className="hover:text-white">Aviso Legal</a></li>
-            <li><a href="#" className="hover:text-white">Política de Cookies</a></li>
-            <li className="pt-2 text-xs text-white/60">
-              Tratamientos: {TREATMENTS.length} especialidades
-            </li>
+            <li><a href="#" className="hover:text-primary">Política de Privacidad</a></li>
+            <li><a href="#" className="hover:text-primary">Aviso Legal</a></li>
+            <li><a href="#" className="hover:text-primary">Política de Cookies</a></li>
           </FooterCol>
         </div>
 
-        <div className="mt-14 border-t border-white/15 pt-6 text-center text-xs text-white/60">
-          2026 — Plenitud Dental · Privacidad · Cookies
+        <div className="mt-12 flex items-center gap-4">
+          <div className="h-px flex-1 bg-border" />
+          <ToothIcon className="h-4 w-4 text-primary/60" />
+          <div className="h-px flex-1 bg-border" />
+        </div>
+
+        <div className="mt-6 flex flex-col items-center justify-between gap-4 text-xs text-muted-foreground sm:flex-row">
+          <p>© 2026 Plenitud Dental &nbsp;|&nbsp; Privacidad &nbsp;|&nbsp; Cookies</p>
+          <a
+            href="#"
+            aria-label="Instagram"
+            className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105"
+          >
+            <Instagram className="h-4 w-4" />
+          </a>
         </div>
       </div>
     </footer>
   );
 }
 
-function FooterCol({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h4 className="text-xs font-semibold tracking-[0.25em] text-white uppercase">
+      <h4 className="text-[11px] font-semibold tracking-[0.28em] text-primary uppercase">
         {title}
       </h4>
-      <ul className="mt-5 space-y-3 text-sm text-white/80">{children}</ul>
+      <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
+        {children}
+      </ul>
     </div>
   );
 }
