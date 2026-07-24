@@ -443,7 +443,9 @@ function Footer() {
         <div className="mt-6 flex flex-col items-center justify-between gap-4 text-xs text-muted-foreground sm:flex-row">
           <p>© 2026 Plenitud Dental &nbsp;|&nbsp; Privacidad &nbsp;|&nbsp; Cookies</p>
           <a
-            href="#"
+            href="https://www.instagram.com/plenituddental/"
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="Instagram"
             className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105"
           >
