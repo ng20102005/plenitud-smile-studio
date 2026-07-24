@@ -421,8 +421,10 @@ function Footer() {
           </FooterCol>
 
           <FooterCol title="Horario">
-            <li className="text-foreground">Lunes a viernes: 10:00 – 14:00 y 15:00 – 19:00</li>
-            <li>Sábados y domingos cerrado</li>
+            <li className="text-foreground">Lunes a Viernes</li>
+            <li>10:00 – 14:00</li>
+            <li>15:00 – 19:00</li>
+            <li className="pt-2">Sábados y domingos cerrado</li>
           </FooterCol>
 
           <FooterCol title="Legal">
