@@ -410,7 +410,7 @@ function Footer() {
             </li>
             <li className="flex items-center gap-3">
               <MessageCircle className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
-              <a href="tel:692434765" className="hover:text-primary">692 434 765</a>
+              <a href="https://wa.me/34692434765" target="_blank" rel="noopener noreferrer" className="hover:text-primary">692 434 765</a>
             </li>
             <li className="flex items-center gap-3">
               <Mail className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
