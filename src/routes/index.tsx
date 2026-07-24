@@ -10,15 +10,23 @@ import {
   MessageCircle,
   Instagram,
 } from "lucide-react";
-import { Placeholder } from "@/components/plenitud/Placeholder";
-import { AppointmentModal } from "@/components/plenitud/AppointmentModal";
 import logoAsset from "@/assets/logo_plenitud.png.asset.json";
 import plenitud5Asset from "@/assets/plenitud_5.jpg.asset.json";
 import clinicaExteriorAsset from "@/assets/clinica_exterior.jpeg.asset.json";
+import trGeneral from "@/assets/tratamiento_general.png.asset.json";
+import trPeriodoncia from "@/assets/tratamiento_periodoncia.png.asset.json";
+import trImplantologia from "@/assets/tratamiento_implantologia.png.asset.json";
+import trEstetica from "@/assets/tratamiento_estetica.png.asset.json";
+import trEndodoncia from "@/assets/tratamiento_endodoncia.png.asset.json";
+import trOrtodoncia from "@/assets/tratamiento_ortodoncia.png.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Landing,
 });
+
+const APPOINTMENT_URL = "https://www.doctoralia.es/clinicas/plenitud-dental";
+const INSTAGRAM_URL = "https://www.instagram.com/plenituddental/";
+const WHATSAPP_URL = "https://wa.me/34692434765";
 
 const NAV = [
   { label: "Inicio", href: "#inicio" },
@@ -31,49 +39,74 @@ const TREATMENT_ITEMS = [
   {
     title: "Odontología General",
     desc: "Revisiones, limpiezas, empastes y todo el cuidado esencial para mantener tu salud bucal en perfecto estado.",
+    image: trGeneral.url,
   },
   {
     title: "Periodoncia",
     desc: "Cuidado especializado de encías y tejidos de soporte dental. Prevención y tratamiento de enfermedades periodontales.",
+    image: trPeriodoncia.url,
   },
   {
     title: "Implantología y Prótesis",
     desc: "Recupera la funcionalidad y estética de tu sonrisa con implantes de última generación y prótesis personalizadas.",
+    image: trImplantologia.url,
   },
   {
     title: "Estética y Rehabilitación",
     desc: "Blanqueamiento, carillas, coronas y diseño de sonrisa. Recupera la belleza natural de tu sonrisa con tratamientos personalizados.",
+    image: trEstetica.url,
   },
   {
     title: "Endodoncia",
     desc: "Tratamiento de conductos con tecnología microscópica de precisión. Salvamos tus dientes naturales con técnicas mínimamente invasivas.",
+    image: trEndodoncia.url,
   },
   {
     title: "Ortodoncia",
     desc: "Corregimos la alineación de tus dientes con brackets estéticos y alineadores invisibles. Logra la sonrisa recta y armoniosa que siempre has deseado.",
+    image: trOrtodoncia.url,
   },
 ];
 
 function Landing() {
-  const [modalOpen, setModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const openModal = () => {
-    setMenuOpen(false);
-    setModalOpen(true);
-  };
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground antialiased">
-      <Header onOpenModal={openModal} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       <main>
         <Hero />
         <About />
         <Treatments />
-        <PhotoBanner onOpenModal={openModal} />
+        <PhotoBanner />
       </main>
       <Footer />
-      <AppointmentModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <WhatsAppFloating />
     </div>
+  );
+}
+
+/* ---------- Appointment link (reusable) ---------- */
+function AppointmentLink({
+  children,
+  className = "",
+  onClick,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+}) {
+  return (
+    <a
+      href={APPOINTMENT_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={onClick}
+      className={`group inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md ${className}`}
+    >
+      {children}
+      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+    </a>
   );
 }
 
@@ -99,11 +132,9 @@ function BrandMark({ compact = false }: { compact?: boolean }) {
 
 /* ---------- Header ---------- */
 function Header({
-  onOpenModal,
   menuOpen,
   setMenuOpen,
 }: {
-  onOpenModal: () => void;
   menuOpen: boolean;
   setMenuOpen: (v: boolean) => void;
 }) {
@@ -126,8 +157,17 @@ function Header({
           ))}
         </nav>
 
-        <div className="hidden lg:block">
-          <PrimaryCta onClick={onOpenModal}>Pedir Cita</PrimaryCta>
+        <div className="hidden items-center gap-3 lg:flex">
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className="text-primary/80 transition-colors hover:text-primary"
+          >
+            <Instagram className="h-5 w-5" strokeWidth={1.5} />
+          </a>
+          <AppointmentLink>Pedir Cita</AppointmentLink>
         </div>
 
         <button
@@ -152,10 +192,22 @@ function Header({
                 {l.label}
               </a>
             ))}
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-primary"
+            >
+              <Instagram className="h-4 w-4" strokeWidth={1.5} />
+              Instagram
+            </a>
             <div className="mt-2">
-              <PrimaryCta onClick={onOpenModal} className="w-full justify-center">
+              <AppointmentLink
+                onClick={() => setMenuOpen(false)}
+                className="w-full justify-center"
+              >
                 Pedir Cita
-              </PrimaryCta>
+              </AppointmentLink>
             </div>
           </div>
         </div>
@@ -164,30 +216,10 @@ function Header({
   );
 }
 
-function PrimaryCta({
-  children,
-  onClick,
-  className = "",
-}: {
-  children: React.ReactNode;
-  onClick?: () => void;
-  className?: string;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`group inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md ${className}`}
-    >
-      {children}
-      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-    </button>
-  );
-}
-
-/* ---------- Hero (centered with monogram + wavy decoration) ---------- */
+/* ---------- Hero ---------- */
 function Hero() {
   return (
-    <section id="inicio" className="relative overflow-hidden">
+    <section id="inicio" className="relative overflow-hidden bg-white">
       <WavyLines />
       <div className="relative mx-auto max-w-4xl px-6 pt-20 pb-24 text-center lg:pt-28 lg:pb-32">
         <div className="mx-auto flex flex-col items-center">
@@ -206,12 +238,7 @@ function Hero() {
         </p>
 
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-          <a
-            href="#tratamientos"
-            className="group inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md"
-          >
-            Ver Tratamientos
-          </a>
+          <AppointmentLink className="px-6 py-3">Pedir Cita</AppointmentLink>
           <a
             href="tel:933087059"
             className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-white/60 px-6 py-3 text-sm font-semibold text-primary transition-all hover:bg-white"
@@ -229,7 +256,7 @@ function WavyLines() {
   return (
     <svg
       aria-hidden
-      className="pointer-events-none absolute inset-0 h-full w-full text-[oklch(0.78_0.08_80)]/40"
+      className="pointer-events-none absolute inset-0 h-full w-full text-primary/25"
       preserveAspectRatio="none"
       viewBox="0 0 1200 800"
       fill="none"
@@ -313,16 +340,17 @@ function Treatments() {
         </h2>
 
         <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {TREATMENT_ITEMS.map(({ title, desc }) => (
+          {TREATMENT_ITEMS.map(({ title, desc, image }) => (
             <article
               key={title}
               className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-border/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
               <div className="p-4 pb-0">
-                <Placeholder
-                  className="aspect-square w-full rounded-xl"
-                  label={`Imagen de ${title}`}
-                  dimensions="800 × 800"
+                <img
+                  src={image}
+                  alt={title}
+                  className="aspect-square w-full rounded-xl object-cover"
+                  loading="lazy"
                 />
               </div>
               <div className="flex flex-1 flex-col items-center px-6 pt-5 pb-8 text-center">
@@ -338,7 +366,7 @@ function Treatments() {
 }
 
 /* ---------- Photo banner ---------- */
-function PhotoBanner({ onOpenModal }: { onOpenModal: () => void }) {
+function PhotoBanner() {
   return (
     <section className="relative">
       <div className="relative h-[420px] w-full overflow-hidden lg:h-[520px]">
@@ -357,15 +385,17 @@ function PhotoBanner({ onOpenModal }: { onOpenModal: () => void }) {
           </h2>
 
           <div className="mt-8 flex flex-col items-start gap-3">
-            <button
-              onClick={onOpenModal}
+            <a
+              href={APPOINTMENT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center gap-3 rounded-full bg-white py-2 pr-2 pl-6 text-sm font-semibold text-primary transition-all hover:bg-white/90"
             >
               Pedir Cita
               <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground transition-transform group-hover:translate-x-0.5">
                 <ArrowRight className="h-4 w-4" />
               </span>
-            </button>
+            </a>
             <a
               href="tel:933087059"
               className="text-xs font-semibold tracking-[0.25em] text-white/90 uppercase hover:text-white"
@@ -385,6 +415,24 @@ function PhotoBanner({ onOpenModal }: { onOpenModal: () => void }) {
   );
 }
 
+/* ---------- Floating WhatsApp button ---------- */
+function WhatsAppFloating() {
+  return (
+    <a
+      href={WHATSAPP_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Contactar por WhatsApp"
+      className="fixed bottom-6 right-6 z-50 grid h-14 w-14 place-items-center rounded-full shadow-lg transition-transform duration-200 hover:scale-110"
+      style={{ backgroundColor: "#25D366" }}
+    >
+      <svg viewBox="0 0 32 32" className="h-7 w-7 text-white" fill="currentColor" aria-hidden>
+        <path d="M19.11 17.24c-.29-.15-1.7-.84-1.96-.94-.26-.1-.45-.15-.64.15-.19.29-.74.94-.9 1.13-.17.19-.33.22-.62.07-.29-.15-1.22-.45-2.32-1.43-.86-.77-1.44-1.72-1.6-2.01-.17-.29-.02-.44.13-.59.13-.13.29-.34.44-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49l-.55-.01c-.19 0-.51.07-.77.36-.26.29-1.01.99-1.01 2.41 0 1.42 1.03 2.8 1.18 2.99.15.19 2.04 3.12 4.95 4.37.69.3 1.23.48 1.65.61.69.22 1.32.19 1.82.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34zM16.03 5.33h-.01c-5.91 0-10.71 4.8-10.71 10.71 0 1.89.49 3.74 1.44 5.37L5 27l5.74-1.5c1.57.86 3.35 1.32 5.28 1.32h.01c5.9 0 10.71-4.8 10.71-10.71 0-2.86-1.11-5.55-3.14-7.58a10.66 10.66 0 0 0-7.57-3.2zm0 19.42h-.01a8.9 8.9 0 0 1-4.53-1.24l-.32-.19-3.4.89.91-3.31-.21-.34a8.87 8.87 0 0 1-1.36-4.72c0-4.9 3.99-8.89 8.9-8.89 2.37 0 4.6.92 6.28 2.6a8.83 8.83 0 0 1 2.6 6.29c0 4.9-3.99 8.9-8.87 8.9z" />
+      </svg>
+    </a>
+  );
+}
+
 /* ---------- Footer ---------- */
 function Footer() {
   return (
@@ -397,6 +445,21 @@ function Footer() {
               Clínica dental en Sant Martí. Tecnología avanzada, equipo cercano y un espacio
               pensado para tu bienestar.
             </p>
+            <div className="mt-6">
+              <h4 className="text-[11px] font-semibold tracking-[0.28em] text-primary uppercase">
+                Síguenos
+              </h4>
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="mt-4 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
+              >
+                <Instagram className="h-4 w-4" strokeWidth={1.5} />
+                @plenituddental
+              </a>
+            </div>
           </div>
 
           <FooterCol title="Contacto">
@@ -410,7 +473,7 @@ function Footer() {
             </li>
             <li className="flex items-center gap-3">
               <MessageCircle className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
-              <a href="https://wa.me/34692434765" target="_blank" rel="noopener noreferrer" className="hover:text-primary">692 434 765</a>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="hover:text-primary">692 434 765</a>
             </li>
             <li className="flex items-center gap-3">
               <Mail className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
@@ -443,7 +506,7 @@ function Footer() {
         <div className="mt-6 flex flex-col items-center justify-between gap-4 text-xs text-muted-foreground sm:flex-row">
           <p>© 2026 Plenitud Dental &nbsp;|&nbsp; Privacidad &nbsp;|&nbsp; Cookies</p>
           <a
-            href="https://www.instagram.com/plenituddental/"
+            href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
