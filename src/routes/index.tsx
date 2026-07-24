@@ -12,6 +12,9 @@ import {
 } from "lucide-react";
 import { Placeholder } from "@/components/plenitud/Placeholder";
 import { AppointmentModal } from "@/components/plenitud/AppointmentModal";
+import logoAsset from "@/assets/logo_plenitud.png.asset.json";
+import plenitud5Asset from "@/assets/plenitud_5.jpg.asset.json";
+import clinicaExteriorAsset from "@/assets/clinica_exterior.jpeg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -187,36 +190,15 @@ function Hero() {
     <section id="inicio" className="relative overflow-hidden">
       <WavyLines />
       <div className="relative mx-auto max-w-4xl px-6 pt-20 pb-24 text-center lg:pt-28 lg:pb-32">
-        {/* Monogram */}
         <div className="mx-auto flex flex-col items-center">
-          <div className="relative flex items-end justify-center">
-            <span
-              aria-hidden
-              className="font-serif text-[7rem] leading-none font-semibold text-primary lg:text-[9rem]"
-            >
-              S
-            </span>
-            <span
-              aria-hidden
-              className="-ml-6 font-serif text-[7rem] leading-none font-semibold italic text-[oklch(var(--gold))] lg:-ml-8 lg:text-[9rem]"
-              style={{ color: "oklch(0.7 0.1 75)" }}
-            >
-              R
-            </span>
-          </div>
-          <div className="mt-2 flex flex-col items-center gap-1">
-            <span className="font-serif text-lg font-medium tracking-[0.35em] text-primary lg:text-xl">
-              PLENITUD DENTAL
-            </span>
-            <div className="flex items-center gap-2 text-primary/60">
-              <span className="h-px w-16 bg-primary/30" />
-              <ToothIcon className="h-4 w-4" />
-              <span className="h-px w-16 bg-primary/30" />
-            </div>
-          </div>
+          <img
+            src={logoAsset.url}
+            alt="SR Plenitud Dental"
+            className="h-56 w-auto lg:h-72"
+          />
         </div>
 
-        <h1 className="mt-14 font-serif text-5xl leading-[1.05] font-semibold tracking-tight text-foreground lg:text-7xl">
+        <h1 className="mt-10 font-serif text-5xl leading-[1.05] font-semibold tracking-tight text-foreground lg:text-7xl">
           Tu sonrisa en Plenitud
         </h1>
         <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground lg:text-lg">
@@ -287,10 +269,10 @@ function About() {
           Sobre Nosotros
         </span>
         <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-start">
-          <Placeholder
-            className="aspect-[4/5] w-full rounded-2xl"
-            label="Fotografía de la clínica"
-            dimensions="1200 × 1500"
+          <img
+            src={plenitud5Asset.url}
+            alt="Sillón odontológico en Plenitud Dental"
+            className="aspect-[4/5] w-full rounded-2xl object-cover shadow-sm"
           />
           <div className="flex flex-col justify-center">
             <h2 className="font-serif text-4xl leading-[1.1] font-semibold text-foreground lg:text-5xl">
@@ -360,10 +342,10 @@ function PhotoBanner({ onOpenModal }: { onOpenModal: () => void }) {
   return (
     <section className="relative">
       <div className="relative h-[420px] w-full overflow-hidden lg:h-[520px]">
-        <Placeholder
-          className="absolute inset-0 h-full w-full rounded-none"
-          label="Fotografía exterior de la clínica"
-          dimensions="1920 × 1080"
+        <img
+          src={clinicaExteriorAsset.url}
+          alt="Fachada de la clínica Plenitud Dental en Sant Martí"
+          className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/30 to-black/50" />
 
@@ -428,7 +410,7 @@ function Footer() {
             </li>
             <li className="flex items-center gap-3">
               <MessageCircle className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
-              <a href="tel:692434765" className="hover:text-primary">692 434 765</a>
+              <a href="https://wa.me/34692434765" target="_blank" rel="noopener noreferrer" className="hover:text-primary">692 434 765</a>
             </li>
             <li className="flex items-center gap-3">
               <Mail className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
@@ -439,8 +421,10 @@ function Footer() {
           </FooterCol>
 
           <FooterCol title="Horario">
-            <li className="text-foreground">Lunes a viernes: 10:00 – 14:00 y 15:00 – 19:00</li>
-            <li>Sábados y domingos cerrado</li>
+            <li className="text-foreground">Lunes a Viernes</li>
+            <li>10:00 – 14:00</li>
+            <li>15:00 – 19:00</li>
+            <li className="pt-2">Sábados y domingos cerrado</li>
           </FooterCol>
 
           <FooterCol title="Legal">
@@ -459,7 +443,9 @@ function Footer() {
         <div className="mt-6 flex flex-col items-center justify-between gap-4 text-xs text-muted-foreground sm:flex-row">
           <p>© 2026 Plenitud Dental &nbsp;|&nbsp; Privacidad &nbsp;|&nbsp; Cookies</p>
           <a
-            href="#"
+            href="https://www.instagram.com/plenituddental/"
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="Instagram"
             className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105"
           >
