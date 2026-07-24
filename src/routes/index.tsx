@@ -269,10 +269,10 @@ function About() {
           Sobre Nosotros
         </span>
         <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-start">
-          <Placeholder
-            className="aspect-[4/5] w-full rounded-2xl"
-            label="Fotografía de la clínica"
-            dimensions="1200 × 1500"
+          <img
+            src={plenitud5Asset.url}
+            alt="Sillón odontológico en Plenitud Dental"
+            className="aspect-[4/5] w-full rounded-2xl object-cover shadow-sm"
           />
           <div className="flex flex-col justify-center">
             <h2 className="font-serif text-4xl leading-[1.1] font-semibold text-foreground lg:text-5xl">
