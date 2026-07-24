@@ -12,6 +12,9 @@ import {
 } from "lucide-react";
 import { Placeholder } from "@/components/plenitud/Placeholder";
 import { AppointmentModal } from "@/components/plenitud/AppointmentModal";
+import logoAsset from "@/assets/logo_plenitud.png.asset.json";
+import plenitud5Asset from "@/assets/plenitud_5.jpg.asset.json";
+import clinicaExteriorAsset from "@/assets/clinica_exterior.jpeg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Landing,
