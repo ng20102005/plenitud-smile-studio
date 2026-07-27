@@ -10,15 +10,15 @@ import {
   MessageCircle,
   Instagram,
 } from "lucide-react";
-const logoAsset = "/logo_plenitud.png";
-const plenitud5Asset = "/plenitud_5.jpg";
-const clinicaExteriorAsset = "/clinica_exterior.jpeg";
-const trGeneral = "/tratamiento_general.png";
-const trPeriodoncia = "/tratamiento_periodoncia.png";
-const trImplantologia = "/tratamiento_implantologia.png";
-const trEstetica = "/tratamiento_estetica.png";
-const trEndodoncia = "/tratamiento_endodoncia.png";
-const trOrtodoncia = "/tratamiento_ortodoncia.png";
+import logoAsset from "@/assets/logo_plenitud.png.asset.json";
+import plenitud5Asset from "@/assets/plenitud_5.jpg.asset.json";
+import clinicaExteriorAsset from "@/assets/clinica_exterior.jpeg.asset.json";
+import trGeneral from "@/assets/tratamiento_general.png.asset.json";
+import trPeriodoncia from "@/assets/tratamiento_periodoncia.png.asset.json";
+import trImplantologia from "@/assets/tratamiento_implantologia.png.asset.json";
+import trEstetica from "@/assets/tratamiento_estetica.png.asset.json";
+import trEndodoncia from "@/assets/tratamiento_endodoncia.png.asset.json";
+import trOrtodoncia from "@/assets/tratamiento_ortodoncia.png.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Landing,
