@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   ArrowRight,
@@ -10,15 +10,6 @@ import {
   MessageCircle,
   Instagram,
 } from "lucide-react";
-import logoAsset from "@/assets/logo_plenitud.png.asset.json";
-import plenitud5Asset from "@/assets/plenitud_5.jpg.asset.json";
-import clinicaExteriorAsset from "@/assets/clinica_exterior.jpeg.asset.json";
-import trGeneral from "@/assets/tratamiento_general.png.asset.json";
-import trPeriodoncia from "@/assets/tratamiento_periodoncia.png.asset.json";
-import trImplantologia from "@/assets/tratamiento_implantologia.png.asset.json";
-import trEstetica from "@/assets/tratamiento_estetica.png.asset.json";
-import trEndodoncia from "@/assets/tratamiento_endodoncia.png.asset.json";
-import trOrtodoncia from "@/assets/tratamiento_ortodoncia.png.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -27,6 +18,8 @@ export const Route = createFileRoute("/")({
 const APPOINTMENT_URL = "https://www.doctoralia.es/clinicas/plenitud-dental";
 const INSTAGRAM_URL = "https://www.instagram.com/plenituddental/";
 const WHATSAPP_URL = "https://wa.me/34692434765";
+const EMAIL_COMPOSE_URL =
+  "https://mail.google.com/mail/?view=cm&fs=1&to=srplenitudental@gmail.com";
 
 const NAV = [
   { label: "Inicio", href: "#inicio" },
@@ -39,32 +32,32 @@ const TREATMENT_ITEMS = [
   {
     title: "Odontología General",
     desc: "Revisiones, limpiezas, empastes y todo el cuidado esencial para mantener tu salud bucal en perfecto estado.",
-    image: trGeneral.url,
+    image: "/tratamiento_general.png",
   },
   {
     title: "Periodoncia",
     desc: "Cuidado especializado de encías y tejidos de soporte dental. Prevención y tratamiento de enfermedades periodontales.",
-    image: trPeriodoncia.url,
+    image: "/tratamiento_periodoncia.png",
   },
   {
     title: "Implantología y Prótesis",
     desc: "Recupera la funcionalidad y estética de tu sonrisa con implantes de última generación y prótesis personalizadas.",
-    image: trImplantologia.url,
+    image: "/tratamiento_implantologia.png",
   },
   {
     title: "Estética y Rehabilitación",
     desc: "Blanqueamiento, carillas, coronas y diseño de sonrisa. Recupera la belleza natural de tu sonrisa con tratamientos personalizados.",
-    image: trEstetica.url,
+    image: "/tratamiento_estetica.png",
   },
   {
     title: "Endodoncia",
     desc: "Tratamiento de conductos con tecnología microscópica de precisión. Salvamos tus dientes naturales con técnicas mínimamente invasivas.",
-    image: trEndodoncia.url,
+    image: "/tratamiento_endodoncia.png",
   },
   {
     title: "Ortodoncia",
     desc: "Corregimos la alineación de tus dientes con brackets estéticos y alineadores invisibles. Logra la sonrisa recta y armoniosa que siempre has deseado.",
-    image: trOrtodoncia.url,
+    image: "/tratamiento_ortodoncia.png",
   },
 ];
 
@@ -158,15 +151,6 @@ function Header({
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <a
-            href={INSTAGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            className="text-primary/80 transition-colors hover:text-primary"
-          >
-            <Instagram className="h-5 w-5" strokeWidth={1.5} />
-          </a>
           <AppointmentLink>Pedir Cita</AppointmentLink>
         </div>
 
@@ -224,9 +208,10 @@ function Hero() {
       <div className="relative mx-auto max-w-4xl px-6 pt-20 pb-24 text-center lg:pt-28 lg:pb-32">
         <div className="mx-auto flex flex-col items-center">
           <img
-            src={logoAsset.url}
+            src="/logo_plenitud.png"
             alt="SR Plenitud Dental"
             className="h-56 w-auto lg:h-72"
+            style={{ background: "transparent" }}
           />
         </div>
 
@@ -297,7 +282,7 @@ function About() {
         </span>
         <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-start">
           <img
-            src={plenitud5Asset.url}
+            src="/plenitud_5.jpg"
             alt="Sillón odontológico en Plenitud Dental"
             className="aspect-[4/5] w-full rounded-2xl object-cover shadow-sm"
           />
@@ -371,7 +356,7 @@ function PhotoBanner() {
     <section className="relative">
       <div className="relative h-[420px] w-full overflow-hidden lg:h-[520px]">
         <img
-          src={clinicaExteriorAsset.url}
+          src="/clinica_exterior.jpeg"
           alt="Fachada de la clínica Plenitud Dental en Sant Martí"
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -477,7 +462,12 @@ function Footer() {
             </li>
             <li className="flex items-center gap-3">
               <Mail className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
-              <a href="mailto:srplenitudental@gmail.com" className="break-all hover:text-primary">
+              <a
+                href={EMAIL_COMPOSE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="break-all hover:text-primary"
+              >
                 srplenitudental@gmail.com
               </a>
             </li>
@@ -491,9 +481,21 @@ function Footer() {
           </FooterCol>
 
           <FooterCol title="Legal">
-            <li><a href="#" className="hover:text-primary">Política de Privacidad</a></li>
-            <li><a href="#" className="hover:text-primary">Aviso Legal</a></li>
-            <li><a href="#" className="hover:text-primary">Política de Cookies</a></li>
+            <li>
+              <Link to="/privacidad" className="hover:text-primary">
+                Política de Privacidad
+              </Link>
+            </li>
+            <li>
+              <Link to="/aviso-legal" className="hover:text-primary">
+                Aviso Legal
+              </Link>
+            </li>
+            <li>
+              <Link to="/cookies" className="hover:text-primary">
+                Política de Cookies
+              </Link>
+            </li>
           </FooterCol>
         </div>
 
