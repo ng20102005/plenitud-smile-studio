@@ -282,7 +282,7 @@ function About() {
         </span>
         <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-start">
           <img
-            src="/plenitud_5.jpg"
+            src="/sillon.jpg"
             alt="Sillón odontológico en Plenitud Dental"
             className="aspect-[4/5] w-full rounded-2xl object-cover shadow-sm"
           />
