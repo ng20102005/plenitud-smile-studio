@@ -77,7 +77,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SR Plenitud Dental | Clínica Dental en Sant Martí, Barcelona" },
+      { title: "Plenitud Dental | Clínica Dental en Sant Martí, Barcelona" },
       { name: "description", content: "Clínica dental de proximidad en Sant Martí, Barcelona. Odontología general, implantes, ortodoncia y estética dental con trato cercano." },
       { property: "og:title", content: "SR Plenitud Dental — Sant Martí, Barcelona" },
       { property: "og:description", content: "Cuidado dental de confianza en el corazón de Sant Martí, Barcelona." },
