@@ -77,10 +77,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SR Plenitud Dental — Clínica dental en Sant Martí, Barcelona" },
+      { title: "SR Plenitud Dental | Clínica Dental en Sant Martí, Barcelona" },
       { name: "description", content: "Clínica dental de proximidad en Sant Martí, Barcelona. Odontología general, implantes, ortodoncia y estética dental con trato cercano." },
       { property: "og:title", content: "SR Plenitud Dental — Sant Martí, Barcelona" },
       { property: "og:description", content: "Cuidado dental de confianza en el corazón de Sant Martí, Barcelona." },
+      { name: "keywords", content: "clínica dental barcelona, dentista sant martí, implantes dentales barcelona, periodoncia, ortodoncia invisible, dentista barcelona, mejor dentista barcelona, pedir cita dentista barcelona, dentista cerca de mí, clínica dental cerca de mí, especialista periodoncia barcelona, dentista periodoncista barcelona, sangrado de encías dentista barcelona, higiene dental, implantes dentales baratos, precio implantes, odontologo, odontologo barato, blanqueamiento dental, carillas dentales" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
